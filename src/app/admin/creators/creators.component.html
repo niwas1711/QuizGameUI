@@ -1,0 +1,13 @@
+<button mat-stroked-button (click)="addCreator()">Add Creator</button>
+
+
+<mat-table [dataSource]="users" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="email" >
+      <mat-header-cell *matHeaderCellDef> emailIds with creator access </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+    </ng-container>
+  
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>

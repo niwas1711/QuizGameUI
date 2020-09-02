@@ -1,0 +1,17 @@
+<mat-card>
+    <form (ngSubmit)="onSubmit()" class="addcreator-form" [formGroup]="creatorForm" novalidate>
+      <mat-card-title>Add Creator</mat-card-title>
+  
+      <mat-card-content>
+        <mat-form-field class="full-width required">
+          <input matInput placeholder="email" formControlName="email" class="required">
+          <!--<mat-hint align="end" *ngIf="questionForm['controls'].questionText.errors && !questionForm['controls'].questionText.pristine" class="error">Question is required!</mat-hint>-->
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="primary" [disabled]="!creatorForm.valid">SAVE</button>
+      <button mat-button type="button">Cancel</button>
+    </mat-card-actions>
+    {{creatorForm.value|json}}
+    </form>
+</mat-card>

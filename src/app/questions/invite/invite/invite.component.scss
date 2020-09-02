@@ -1,0 +1,36 @@
+.full {
+    margin: 40px;
+    width: 80%;
+    height: 85%;
+}
+
+mat-form-field {
+    width: 100%;
+    padding: 20px;
+}
+
+.title {
+    font-size: 48px;
+}
+.mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: none;
+}
+
+
+.score {
+    font-size: 72px;
+    color: green;
+}
+mat-form-field-infix {
+    font-size: 24px !important;
+}
+
+.mat-raised-button {
+    font: 24px;
+    min-width: 200px;
+    line-height: 48px;
+    justify-content: flex-end;
+  }
+mat-card-actions {
+    padding: 20px;
+}

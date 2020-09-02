@@ -1,0 +1,46 @@
+<div class="parent">
+  <div fxFlexFill fxLayout="row">
+    <mat-card fxFlex class="page" *ngIf="questions">
+      <div fxLayout="column"  *ngIf="questions.length > 0">
+        <span fxFlex="20">
+          Time elapsed: {{questionService.displayTimeElapsed()}}
+        </span>
+        
+          <mat-card>
+          <mat-progress-bar class="quiz-progress-bar" mode="determinate" value="{{userIndex*factor}} "></mat-progress-bar>
+        </mat-card>
+       
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> Question {{userIndex+1}}</mat-card-title>
+          </mat-card-header>
+     
+      
+          <mat-card-content>
+            <mat-card-subtitle>
+              {{questions[userIndex]?.questionText}}
+            </mat-card-subtitle>
+            <mat-radio-group  aria-label="Select an option">
+              <div *ngFor="let answer of questions[userIndex]?.answers; let i = index" class="answer"
+                [class.correct]="answer.correct">
+                <mat-radio-button  class="radiobutton" value="{{answer.answerText}}" [checked]="scoreObject.state[userIndex].answerId === i"
+                  (click)="answerKeyed(questions[userIndex]?._id, i)">
+                  {{answer.answerText}}</mat-radio-button>
+              </div>
+            </mat-radio-group>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-raised-button *ngIf="prevButShow" (click)="changeIndex(-1);" color="primary">Previous</button>
+            <button mat-raised-button *ngIf="!lastButShow" (click)="changeIndex(1);" color="primary">Next</button>
+            <button mat-raised-button *ngIf="lastButShow" (click)="changeIndex(1);" color="accent">Submit
+              Quiz</button>
+
+          </mat-card-actions>
+        </mat-card>
+       
+      </div>
+      <div *ngIf="questions.length == 0">Loading ...</div>
+    </mat-card>
+  </div>
+</div>

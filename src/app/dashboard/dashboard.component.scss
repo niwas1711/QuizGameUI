@@ -1,0 +1,43 @@
+
+ .parent{
+  background-size: cover;
+  background-position: center center;
+  height: calc(100% - 100px);
+ }
+
+ .mat-divider {
+    background-color: #ffffff;
+  }
+
+  .container{
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .sub-container{
+    display: flex;
+    align-items: stretch;
+    width:50%;
+  }
+
+  .create-button {
+    font-size: large;
+    height: 30px;
+    width: 200px;
+    margin: 20px;
+  }
+  .line {
+    flex: 1;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  .main-card-left{
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+
+  .main-card-right{
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }

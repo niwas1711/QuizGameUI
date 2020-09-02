@@ -1,0 +1,193 @@
+<div class="parent">
+  <!--Main page-->
+  <div fxLayout="column" fxFlexFill fxLayoutAlign="space-between stretch">
+    <!--2 parts button an rest-->
+    <div *ngIf="isCreator" fxFlex="10" fxlayout="column">
+      <button class="create-button" *ngIf="isCreator" (click)="createGame()">Create Game</button>
+    </div>
+    <div *ngIf="isAdmin" fxFlex="10" fxlayout="column">
+      <button class="create-button" *ngIf="isAdmin" (click)="addCreator()">Add Creator</button>
+    </div>
+    <div>
+      <mat-divider></mat-divider>
+    </div>
+  <div fxFlex fxLayoutGap="20px" fxLayout="row">
+    <div fxFlex="50" fxLayout="column">
+      <mat-card fxFlex class="main-card-left">
+        <mat-accordion>
+
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              InProgress
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+              <div fxlayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start start">
+                <!--It is not getting wrapped into a new row. need to check this-->
+                <div *ngFor="let game of games">
+                  <mat-card *ngIf="game.status == gameInPlay">
+                    <mat-card-header>
+                      <mat-card-title>
+                        {{game?.gameName}}
+                      </mat-card-title>
+                    </mat-card-header>
+                    <button mat-icon-button *ngIf="isCreator" (click)="endGame(game)" aria-label="End Game">
+                      <mat-icon>flag</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="isCreator" (click)="deleteGame(game)" aria-label="Delete Game">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="!isCreator" (click)="playGame(game)" aria-label="Play Game">
+                      <mat-icon>play_arrow</mat-icon>
+                    </button>
+                  </mat-card>
+                </div>
+              </div>
+            </ng-template>
+
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              Upcoming
+            </mat-expansion-panel-header>
+
+            <ng-template matExpansionPanelContent>
+
+              <div fxlayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start start">
+                <div *ngFor="let game of games">
+
+                  <mat-card *ngIf="game.status == gameCreated">
+                    <mat-card-header>
+                      <mat-card-title>
+                        {{game?.gameName}}
+                      </mat-card-title>
+                      <mat-card-subtitle>
+                        Start: {{game?.start | date}} <br>
+                        End: {{game?.end | date}} <br>
+                        Question count: {{game?.questionCount}}
+                      </mat-card-subtitle>
+                    </mat-card-header>
+                    <button mat-icon-button *ngIf="isCreator" (click)="startGame(game)" aria-label="Start Game">
+                      <mat-icon>flag</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="isCreator" (click)="editGame(game)" aria-label="Edit Game">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="isCreator" (click)="deleteGame(game)" aria-label="Delete Game">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="isCreator" (click)="addQuestion(game)" aria-label="Add Question">
+                      <mat-icon>playlist_add</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="isCreator" (click)="showQuestions(game)" aria-label="Show Questions">
+                      <mat-icon>preview</mat-icon>
+                    </button>
+                  </mat-card>
+
+                </div>
+              </div>
+            </ng-template>
+
+          </mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              Completed
+            </mat-expansion-panel-header>
+
+            <ng-template matExpansionPanelContent>
+              <div fxlayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start start">
+                <div *ngFor="let game of games">
+                  <mat-card *ngIf="game.status == gameCompleted">
+                    <mat-card-header>
+                      <mat-card-title>
+                        {{game?.gameName}}
+                      </mat-card-title>
+                    </mat-card-header>
+                    <button mat-icon-button (click)="showWinners(game)" aria-label="Show Winners">
+                      <mat-icon>sports_handball</mat-icon>
+                    </button>
+                  </mat-card>
+                </div>
+              </div>
+            </ng-template>
+
+          </mat-expansion-panel>
+
+        </mat-accordion>
+      </mat-card>
+
+    </div>
+    <div fxFlex fxLayout="column">
+      <mat-card fxFlex class="main-card-right">
+        <!---RIGHT CARD-->
+        <div fxLayout="column">
+          <div fxFlex="50">
+            <mat-table *ngIf="isCreator" [dataSource]="winners" class="mat-elevation-z8">
+              <!-- Position Column -->
+              <ng-container matColumnDef="position">
+                <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="score">
+                <mat-header-cell *matHeaderCellDef> Score </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.score}} </mat-cell>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="time">
+                <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.time}} </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedWinnerColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedWinnerColumns;"></mat-row>
+            </mat-table>
+          </div>
+          <div fxFlex="50">
+            <mat-table *ngIf="!isCreator" [dataSource]="myScores" class="mat-elevation-z8">
+              <!-- Position Column -->
+              <!--  <ng-container matColumnDef="position">
+            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+          </ng-container> -->
+
+              <!-- GameId Column -->
+              <ng-container matColumnDef="gameId">
+                <mat-header-cell *matHeaderCellDef> My Games </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.gameId}} </mat-cell>
+              </ng-container>
+
+              <!-- Score Column -->
+              <ng-container matColumnDef="score">
+                <mat-header-cell *matHeaderCellDef> Score </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.score}} </mat-cell>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <!-- <ng-container matColumnDef="time">
+            <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.time}} </mat-cell>
+          </ng-container> -->
+
+              <mat-header-row *matHeaderRowDef="displayedMyColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedMyColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+
+      </mat-card>
+      <!---END RIGHT CARD-->
+    </div>
+
+  </div>
+</div>
+
+</div>

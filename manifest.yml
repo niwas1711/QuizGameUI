@@ -1,0 +1,9 @@
+# App Manifest
+applications:
+- name: trivia
+  buildpacks: 
+   - https://github.com/cloudfoundry/staticfile-buildpack
+  path: ./dist/testapp
+  command: "$HOME/boot.sh"
+  routes:
+    - route: triviagamedev1.mybluemix.net

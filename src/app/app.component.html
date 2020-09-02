@@ -1,0 +1,55 @@
+
+<mat-sidenav-container fullscreen>
+    <mat-sidenav #sidenav class="sidenav">
+      <mat-nav-list>
+        <a mat-list-item (click)="sidenav.close()" [routerLink]="['/']">
+          <mat-icon mat-list-icon>Home</mat-icon>
+          <span mat-line>Home</span>
+        </a>
+        <a *ngIf="user" mat-list-item (click)="sidenav.close()" [routerLink]="['/dashboard']">
+          <mat-icon mat-list-icon>dashboard</mat-icon>
+          <span mat-line>Dashboard</span>
+        </a>
+        <a *ngIf="user" mat-list-item (click)="sidenav.close(); logout()">
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          <span mat-line>{{user.email}}</span>
+          <span mat-line>{{user.role}}</span>
+          <span mat-line class="secondary">Logout</span>
+        </a>
+        <a *ngIf="!user" mat-list-item (click)="sidenav.close(); login()">
+          <mat-icon mat-list-icon>mood_bad</mat-icon>
+          <span mat-line>Login</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <div class="my-content">
+      <mat-toolbar style="background-color: #354350; color: white;">
+        <button *ngIf="user" mat-icon-button (click)="sidenav.open()">
+          <mat-icon >menu</mat-icon>
+        </button>
+        <div class="heading"><b>IBM</b> {{title}}</div>
+        <span class="fill-remaining-space"></span>
+        <span *ngIf="!user" (click)="login()" mat-line class="toolbar-user-name">
+         Login
+        </span>
+        <span *ngIf="user" mat-line class="toolbar-user-name" [matMenuTriggerFor]="dropdownMenu">
+          <mat-icon mat-list-icon class="accountcircle-user-name">account_circle</mat-icon>
+          {{user.username}}
+        </span>
+        <!-- <button mat-icon-button *ngIf="user" class="toolbar-user-name" [matMenuTriggerFor]="dropdownMenu">
+          <mat-icon mat-list-icon> account_circle</mat-icon>{{user.username}}
+        </button> -->
+      </mat-toolbar>
+   
+        <router-outlet></router-outlet>
+  
+   
+    </div>
+  </mat-sidenav-container>
+  <mat-menu #dropdownMenu x-position="before">
+    <a mat-menu-item href="" (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Logout</span>
+    </a>
+  </mat-menu>

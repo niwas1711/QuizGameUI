@@ -1,0 +1,40 @@
+<div fxFlexFill fxLayout="row">
+  <mat-card class="full" fxFlex style="text-align: center;">
+    <form (ngSubmit)="onInviteSubmit()" novalidate>
+      <div fxLayout="column" fxLayoutGap="40px" fxLayoutAlign="start stretch">
+        <mat-card> Thank you for taking the Trivia !!!</mat-card>
+        <mat-card class="title"> Score </mat-card>
+        <mat-card class="score"> {{score}} </mat-card>
+        <mat-card class="title"> Time Taken </mat-card>
+        <mat-card class="score"> {{timer}} </mat-card>
+        
+        <mat-card>
+          Invite your Centurylink account friends to play the game!
+
+
+          <mat-form-field class="example-chip-list">
+            <mat-chip-list #chipList aria-label="User selection">
+              <mat-chip *ngFor="let user of invitees" [selectable]="selectable" [removable]="removable"
+                (removed)="remove(user)">
+                {{user}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Invite Friend..." #userInput [formControl]="userCtrl" [matAutocomplete]="auto"
+                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+                {{user}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-card-actions>
+            <button mat-raised-button color="primary">Send Invite!!</button>
+          </mat-card-actions>
+
+        </mat-card>
+      </div>
+    </form>
+  </mat-card>
+</div>
